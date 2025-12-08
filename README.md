@@ -6,14 +6,14 @@ A quick reference for common Git and GitHub commands.
 
 ## 1. Deploy (First Time Upload to GitHub)
 
-Use these commands to push your project to GitHub for the first time.
-
 ```bash
 git init
 git add README.md
 git commit -m "Add README"
+
 git add .
 git commit -m "Initial setup"
+
 git branch -M main
 git remote add origin <url>
 git push -u origin main
@@ -21,41 +21,45 @@ git push -u origin main
 
 ---
 
-## 2. Clone (If Repository Already Exists on GitHub)
-
-Clone an existing repository and switch to the main branch.
+## 2. Clone Existing Repo
 
 ```bash
 git clone <repo-url>
 cd <project-folder>
-git switch main
+```
 
-# Always pull latest changes before starting work
+### Switch to main
+```bash
+git checkout main
+```
+
+### Pull latest
+```bash
 git pull origin main
 ```
 
 ---
 
-## 3. Push Main (Normal Updates)
-
-Use these commands to update your repository with new changes.
+## 3. Push to Main (Normal Updates)
 
 ```bash
-git add .            # Or specify files like page.html
+git add .
 git commit -m "Update"
 git push origin main
 ```
 
 ---
 
-## 4. New Branch (Create & Push)
-
-Create a new branch, switch to it, and push changes.
+## 4. Create New Branch (Local & Remote)
 
 ```bash
-git branch           # Check existing branches
-git branch <branch-name>
-git switch -c <branch-name>  # Create AND switch to new branch
+git branch                     # Show branches
+git branch <branch-name>       # Create new local branch
+git checkout <branch-name>     # Switch to that branch
+```
+
+### After doing work
+```bash
 git add .
 git commit -m "Update"
 git push -u origin <branch-name>
@@ -63,67 +67,44 @@ git push -u origin <branch-name>
 
 ---
 
-## 5. Switch Branch (Go Back to Main)
+## 5. Merge Another Branch Into Your Branch
 
-Switch back to the main branch and update it with latest changes.
+🔄 Example: Merge `develop` → `<your-branch>`
 
+### 1. Switch to develop
 ```bash
-git switch main
-git pull origin main
-git add .
-git commit -m "Update"
-git push origin main
+git checkout develop
+```
+
+### 2. Pull latest develop
+```bash
+git pull origin develop
+```
+
+### 3. Switch back to your branch
+```bash
+git checkout <your-branch>
+```
+
+### 4. Merge develop into your branch (skip editor)
+```bash
+git merge develop --no-edit
 ```
 
 ---
 
-## 6. Handling Conflicts
+### If conflicts appear
 
-### Scenario
-
-* Person A edits `footer.php` on line 10 and pushes. ✅ No conflict because it's the first push.
-* Person B also edits `footer.php` on the **same line** but hasn’t pulled Person A’s changes yet.
-
-**What happens when Person B tries to push?**
-Git sees that the remote has changes that B doesn’t have locally. The push is blocked and Git shows:
-
-```
-Updates were rejected because the remote contains work that you do not have locally.
-```
-
-This is because pushing would overwrite remote changes → possible data loss.
-
----
-
-### How to Resolve (for Person B)
-
-1. **Pull first with rebase**
-
-```bash
-git pull origin main --rebase
-```
-
-2. **Fix conflicts (if any appear)**
-   Git will show conflict markers if the same line was edited. Edit the file to combine or choose the correct version.
-
-3. **Continue the rebase**
+Fix the files manually, then run:
 
 ```bash
 git add <file>
-git rebase --continue
-```
-
-4. **Push again**
-
-```bash
-git push origin main
+git commit
 ```
 
 ---
 
-### Notes
-
-* Replace `<url>` with your GitHub repository URL.
-* Replace `<repo-url>` with the clone URL of your repository.
-* Replace `<branch-name>` with the desired branch name.
-* Always pull before starting work to avoid conflicts.
+### Push merged branch
+```bash
+git push origin <your-branch>
+```
